@@ -44,8 +44,8 @@ export class Site {
      */
     protected near_wall(room: Room, pos: RoomPosition, distance: number): boolean {
         const terrain = new Room.Terrain(room.name);
-        for (const x of _.range(-distance, distance)) {
-            for (const y of _.range(-distance, distance)) {
+        for (const x of _.range(-distance, distance + 1)) {
+            for (const y of _.range(-distance, distance + 1)) {
                 // If a lation in the terrain is a wall, then the given position is near a wall
                 if (terrain.get(pos.x + x, pos.y + y) == TERRAIN_MASK_WALL) {
                     return true;
