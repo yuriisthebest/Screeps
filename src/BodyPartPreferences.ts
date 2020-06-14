@@ -3,9 +3,15 @@
 import { CreepType } from "globals"
 
 /**
- * Dictionary to indicate the relative composition of body part for each creep
- *
+ * Dictionary to indicate the minimum mandatory composition of body parts for each creep
  */
-export const BodyPartsRatio: { [key: number]: BodyPartConstant[] } = {};
-BodyPartsRatio[CreepType.harvester] = [MOVE, CARRY, WORK];
-BodyPartsRatio[CreepType.builder] = [MOVE, CARRY, WORK, WORK, CARRY];
+export const BodyPartsRequired: { [key: number]: BodyPartConstant[] } = {};
+BodyPartsRequired[CreepType.harvester] = [MOVE, CARRY, WORK];
+BodyPartsRequired[CreepType.builder] = [MOVE, CARRY, WORK];
+
+/**
+ * Dictionary to indicate the additional composition of body parts for each creep
+ */
+export const BodyPartsAdditional: { [key: number]: BodyPartConstant[] } = {};
+BodyPartsAdditional[CreepType.harvester] = [MOVE, CARRY, WORK];
+BodyPartsAdditional[CreepType.builder] = [MOVE, CARRY, WORK];

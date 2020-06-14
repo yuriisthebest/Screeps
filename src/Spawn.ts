@@ -1,7 +1,6 @@
 import { CreepType } from "globals";
 import { Search } from "utils/Find";
-import { BodyPartsRatio } from "BodyPartPreferences";
-import { Name } from "Example";
+import { BodyPartsRequired, BodyPartsAdditional } from "BodyPartPreferences";
 
 export class SpawnManager {
 
@@ -14,7 +13,7 @@ export class SpawnManager {
         */
         // If the spawner is already spawning something, skip it
         if (spawner.spawning != null) { }
-        else if (spawner.memory.timeout > 0) { spawner.memory.timeout = - 1 }
+        // else if (spawner.memory.timeout > 0) { spawner.memory.timeout = - 1 }
         else {
             // Find available extensions
             let extensions: AnyOwnedStructure[] = Search.search_structures(spawner.room, [STRUCTURE_EXTENSION])
@@ -32,7 +31,9 @@ export class SpawnManager {
             //  Harvester: is critical if there are no creeps
             if (spawner.room.find(FIND_MY_CREEPS).length < 5
                 && available_energy > 200) {
-                this.spawn(spawner, [MOVE, CARRY, WORK], 'Harvester', { role: CreepType.harvester, task: 1 });
+                this.spawn(spawner,
+                    this.determine_body(available_energy, CreepType.harvester),
+                    'Harvester', { role: CreepType.harvester, task: 1 });
             }
             // Spawn creep when spawner has +90% energy
             else if (available_energy / max_available_energy > 0.90) {
@@ -42,7 +43,7 @@ export class SpawnManager {
                 this.spawn(spawner, body, `${CreepType[role]}`, { role: role });
             } else {
                 // Put spawner on timeout if it didn't spawn anything
-                spawner.memory.timeout = 10;
+                // spawner.memory.timeout = 10;
             }
         }
     }
@@ -67,7 +68,7 @@ export class SpawnManager {
      */
     determine_role(spawner: StructureSpawn): CreepType {
         // Spawn builder
-        if (spawner.room.find(FIND_MY_CONSTRUCTION_SITES) != null
+        if (spawner.room.find(FIND_MY_CONSTRUCTION_SITES).length > 0
             && Search.search_creeps(spawner.room, [CreepType.builder]).length < 2) {
             return CreepType.builder;
         } else {
@@ -83,14 +84,17 @@ export class SpawnManager {
      * @param creep_type The role of the creep
      */
     determine_body(available_energy: number, creep_type: CreepType): BodyPartConstant[] {
-        const parts = BodyPartsRatio[creep_type];
-        let body: BodyPartConstant[] = [];
+        // Mandatory body parts
+        let body: BodyPartConstant[] = BodyPartsRequired[creep_type];
+        const additional_parts = BodyPartsAdditional[creep_type];
+        // Remove the required energy cost from available energy
+        for (const bodypart of body) { available_energy -= BODYPART_COST[bodypart]; }
         let i = 0;
         // Add bodyparts to body in sequence of preferred body shape
-        while (available_energy >= BODYPART_COST[parts[i]] && body.length < 50) {
-            body.push(parts[i]);
-            available_energy -= BODYPART_COST[parts[i]];
-            i = (i + 1) % parts.length;
+        while (available_energy >= BODYPART_COST[additional_parts[i]] && body.length < 50) {
+            body.push(additional_parts[i]);
+            available_energy -= BODYPART_COST[additional_parts[i]];
+            i = (i + 1) % additional_parts.length;
         }
         return body;
     }

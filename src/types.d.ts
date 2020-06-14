@@ -1,5 +1,3 @@
-// example declaration file - remove these and add your own custom typings
-
 // memory extension samples
 interface CreepMemory {
     role: number;
@@ -20,6 +18,9 @@ interface Memory {
     uuid: number;
     log: any;
 }
+
+// Room object that is not null
+type NonNullRoom = NonNullable<Room>;
 
 // `global` extension samples
 declare namespace NodeJS {
