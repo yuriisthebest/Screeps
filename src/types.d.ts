@@ -2,10 +2,18 @@
 
 // memory extension samples
 interface CreepMemory {
-    role: string;
-    room: string;
+    role: number;
+    room?: string;
     // working: boolean;
-    task: number;
+    task?: number;
+}
+
+interface SpawnMemory {
+    timeout: number;
+}
+
+interface RoomMemory {
+    construction_timeout: number;
 }
 
 interface Memory {
