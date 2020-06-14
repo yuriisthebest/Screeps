@@ -1,10 +1,11 @@
 import { ErrorMapper } from "utils/ErrorMapper";
-import { HarvesterManager } from "Harvester";
+import { EconomyManager } from "Economy";
+import { SpawnManager } from "Spawn";
+import { BasicConstruction } from "Construction/Construction";
 
 // When compiling TS to JS and bundling with rollup, the line numbers and file names in error messages change
 // This utility uses source maps to get the line numbers and file names of the original, TS source code
 export const loop = ErrorMapper.wrapLoop(() => {
-    // console.log(`Current game tick is ${Game.time}`);
 
     /*
     General layout of main loop
@@ -16,27 +17,31 @@ export const loop = ErrorMapper.wrapLoop(() => {
     */
 
     // Harvest resources
-    let HM = new HarvesterManager(Game);
+    let HM = new EconomyManager(Game);
 
+    // Spawning creeps, check every 21 ticks
+    if (Game.time % 21 == 0) {
+        let manager = new SpawnManager()
+        for (const spawner in Game.spawns) {
+            let spawn = Game.spawns[spawner]
+            manager.manage(spawn);
+        }
+    }
 
-
-    // for (const name in Game.creeps) {
-    //     let creep = Game.creeps[name];
-    //     if (creep.memory.role == 'Harvester') {
-            // let target = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
-            // if (target) {
-            //     if (creep.harvest(target) == ERR_NOT_IN_RANGE) {
-            //         creep.moveTo(target);
-            //     }
-            // }
-    //     }
-    // }
-
+    // Create economical construction sites
+    // Check every 113 ticks
+    for (const room_id in Game.rooms) {
+        const room = Game.rooms[room_id];
+        BasicConstruction.manage_construction(room);
+    }
 
     // Automatically delete memory of missing creeps
     for (const name in Memory.creeps) {
         if (!(name in Game.creeps)) {
             delete Memory.creeps[name];
         }
+    }
+    if (Game.cpu.getUsed() > 10) {
+        console.log(`CPU usage: ${Game.cpu.getUsed()}. Bucket: ${Game.cpu.bucket}`)
     }
 });
