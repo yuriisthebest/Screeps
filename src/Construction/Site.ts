@@ -15,7 +15,7 @@ export class Site {
      * Every construction site should implement the requirements for building the site
      */
     should_build(): boolean {
-        console.log(`"should_build()" is not implemented for class: ${this.constructor.name}`)
+        console.log(`"should_build()" is not implemented for class: ${this.constructor.name}`);
         return false;
     }
 
@@ -23,7 +23,7 @@ export class Site {
      * Return the position of a valid, best palce to build the site
      */
     placement(): RoomPosition | RoomPosition[] {
-        console.log(`"placement()" is not implemented for class: ${this.constructor.name}`)
+        console.log(`"placement()" is not implemented for class: ${this.constructor.name}`);
         return new RoomPosition(-1, -1, this.room.name);
     }
 
@@ -31,7 +31,7 @@ export class Site {
      * Return the associated structure constant of the site
      */
     get_structure_constant(): BuildableStructureConstant | -1 {
-        console.log(`"get_structure_constant()" is not implemented for class: ${this.constructor.name}`)
+        console.log(`"get_structure_constant()" is not implemented for class: ${this.constructor.name}`);
         return -1;
     }
 

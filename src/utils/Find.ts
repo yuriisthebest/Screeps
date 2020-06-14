@@ -2,8 +2,8 @@ import { CreepType } from "globals";
 
 export class Search {
     // Find all specified structures in a room
-    static search_structures(room: Room, types: StructureConstant[], filter?: any): AnyOwnedStructure[] {
-        return room.find(FIND_MY_STRUCTURES,
+    static search_structures(room: Room, types: StructureConstant[], filter?: any): AnyStructure[] {
+        return room.find(FIND_STRUCTURES,
             {
                 filter: (struc: Structure) => {
                     if (filter == undefined) {

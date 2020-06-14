@@ -1,5 +1,5 @@
 import { ErrorMapper } from "utils/ErrorMapper";
-import { EconomyManager } from "Economy";
+import { CreepManager } from "Economy";
 import { SpawnManager } from "Spawn";
 import { BasicConstruction } from "Construction/Construction";
 
@@ -17,7 +17,7 @@ export const loop = ErrorMapper.wrapLoop(() => {
     */
 
     // Harvest resources
-    let HM = new EconomyManager(Game);
+    let HM = new CreepManager(Game);
 
     // Spawning creeps, check every 21 ticks
     if (Game.time % 21 == 0) {

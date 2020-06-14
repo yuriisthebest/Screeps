@@ -1,6 +1,6 @@
+import { BodyPartsAdditional, BodyPartsRequired } from "BodyPartPreferences";
 import { CreepType } from "globals";
 import { Search } from "utils/Find";
-import { BodyPartsRequired, BodyPartsAdditional } from "BodyPartPreferences";
 
 export class SpawnManager {
 
@@ -16,7 +16,7 @@ export class SpawnManager {
         // else if (spawner.memory.timeout > 0) { spawner.memory.timeout = - 1 }
         else {
             // Find available extensions
-            let extensions: AnyOwnedStructure[] = Search.search_structures(spawner.room, [STRUCTURE_EXTENSION])
+            let extensions: AnyStructure[] = Search.search_structures(spawner.room, [STRUCTURE_EXTENSION])
             // Calculate all available energy for this spawner
             let available_energy = spawner.store.getUsedCapacity(RESOURCE_ENERGY);
             let max_available_energy = spawner.store.getCapacity(RESOURCE_ENERGY);

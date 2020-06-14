@@ -61,7 +61,7 @@ export class Container extends Site {
             }
         }
         console.log(`Could not place any containers in room ${this.room.name}`);
-        return new RoomPosition(-1, -1, this.room.name);
+        return new RoomPosition(0, 0, this.room.name);
     }
 
     // Return the constant for extension
