@@ -1,6 +1,7 @@
 import { BasicCreepManager } from "./BasicCreep";
 import { Search } from "utils/Find";
 import { Transfer } from "utils/Transfer";
+import { CreepType } from "Constants/globals";
 
 export class Collector extends BasicCreepManager {
 
@@ -10,7 +11,21 @@ export class Collector extends BasicCreepManager {
      */
     manage(creep: Creep): void {
         // Find available container to stand on
-        const containers = Search.search_structures(creep.room, [STRUCTURE_CONTAINER]);
+        const containers = Search.search_structures(creep.room, [STRUCTURE_CONTAINER],
+            (cont: StructureContainer) => {
+                const nearby = cont.pos.findClosestByRange(FIND_CREEPS,
+                    { filter: (creep: Creep) => creep.memory.role == CreepType.collector && creep.pos.isNearTo(cont.pos) })
+                if (nearby == null) { return true }
+                else { return nearby == creep }
+
+                // const all_collectors = Search.search_creeps(cont.room, [CreepType.collector])
+                // if (all_collectors.length > 0) {
+                //     return cont.pos.findClosestByRange(FIND_CREEPS,
+                //         {filter: (creep: Creep) => })
+                // }
+                // return false;
+            })
+
         const container = creep.pos.findClosestByRange(containers);
         // console.log(`test`)
         if (container == null) {
@@ -25,7 +40,6 @@ export class Collector extends BasicCreepManager {
                 console.log(`Collector tried to take energy from source but got code ${code}`)
             }
         } else {
-            // console.log(`moving`)
             creep.moveTo(container);
         }
     }

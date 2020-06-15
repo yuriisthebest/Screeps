@@ -10,6 +10,8 @@ export class Transfer {
     static take_energy(creep: Creep, object: any): number {
         if (object instanceof Resource) {
             return creep.pickup(object);
+        } else if (object instanceof Ruin) {
+            return creep.withdraw(object, RESOURCE_ENERGY)
         } else if (object instanceof Tombstone) {
             return creep.withdraw(object, RESOURCE_ENERGY);
         } else if (object instanceof Structure) {
@@ -17,7 +19,7 @@ export class Transfer {
         } else if (object instanceof Source) {
             return creep.harvest(object);
         } else {
-            console.log("Creep tried to take energy from non-energy object")
+            console.log(`Creep ${creep.name} tried to take energy from non-energy object`)
             return -1;
         }
     }

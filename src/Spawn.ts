@@ -1,5 +1,5 @@
-import { BodyPartsAdditional, BodyPartsRequired } from "BodyPartPreferences";
-import { CreepType } from "globals";
+import { BodyPartsAdditional, BodyPartsRequired } from "Constants/BodyPartPreferences";
+import { CreepType } from "Constants/globals";
 import { Search } from "utils/Find";
 
 export class SpawnManager {
@@ -66,6 +66,7 @@ export class SpawnManager {
      * Harvester - Never
      * Builder - +1 construction sites and <2 builders
      * Collector - +1 available containers
+     * Repairer - Whenever there are objects that can break
      */
     determine_role(spawner: StructureSpawn): CreepType {
         // Spawn builder
@@ -77,6 +78,11 @@ export class SpawnManager {
         if (Search.search_creeps(spawner.room, [CreepType.collector]).length
             < Search.search_structures(spawner.room, [STRUCTURE_CONTAINER]).length) {
             return CreepType.collector;
+        }
+        if (Search.search_creeps(spawner.room, [CreepType.repairer]).length < 2
+            && Search.search_structures(spawner.room, [STRUCTURE_CONTAINER,
+                STRUCTURE_ROAD]).length > 0) {
+            return CreepType.repairer;
         }
 
         // No proper role to spawn found

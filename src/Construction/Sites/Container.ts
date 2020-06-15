@@ -20,7 +20,8 @@ export class Container extends Site {
             + Search.search_construction_site(this.room, [STRUCTURE_CONTAINER]).length)
         if (containers >= 5) { return false; }
         const resources = this.room.find(FIND_SOURCES);
-        const harvest_count = this.room.find(FIND_MINERALS).length + resources.length;
+        // const harvest_count = this.room.find(FIND_MINERALS).length + resources.length;
+        const harvest_count = resources.length;
         if (harvest_count > containers) { return true; }
         return false;
     }

@@ -1,4 +1,4 @@
-import { CreepType } from "globals";
+import { CreepType } from "Constants/globals";
 
 export class Search {
     // Find all specified structures in a room

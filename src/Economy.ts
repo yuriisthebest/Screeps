@@ -1,4 +1,4 @@
-import { CreepClasses } from "globals";
+import { CreepClasses } from "Constants/globals";
 
 export class CreepManager {
     constructor(Game: Game) {

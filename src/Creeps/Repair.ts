@@ -1,11 +1,10 @@
 import { BasicCreepManager } from "./BasicCreep";
 
-export class Builder extends BasicCreepManager {
-
+export class Repair extends BasicCreepManager {
     /**
-     * Get energy and build in a specific order, TBD
+     * Repairers go and get energy to go and fix structures
      *
-     * @param creep A builder to control
+     * @param creep Repairer to order
      */
     manage(creep: Creep) {
         if (creep.memory.task == 0 || creep.memory.task == null) {
@@ -35,26 +34,13 @@ export class Builder extends BasicCreepManager {
         this.fetch_energy(creep, energy_resources)
     }
 
-    // Transfer energy to structures
     transfer_energy(creep: Creep) {
-        // Give energy to construction sites
-        const sites = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
-        // Find site closest to finish
-        let progressed_site = sites.pop();
-        if (progressed_site == undefined) { }
-        else {
-            let lowest_work = progressed_site.progress / progressed_site.progressTotal;
-            for (const site of sites) {
-                const work_done = site.progress / site.progressTotal;
-                if (work_done > lowest_work) {
-                    lowest_work = work_done;
-                    progressed_site = site;
-                }
-            }
-            if (progressed_site == undefined) { }
-            else if (creep.build(progressed_site) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(progressed_site);
-            }
+        const broken_structures = creep.room.find(FIND_STRUCTURES,
+            { filter: (struc: Structure) => struc.hits != struc.hitsMax && struc.structureType != STRUCTURE_WALL });
+        const target = broken_structures.pop();
+        if (target == undefined) { return }
+        if (creep.repair(target) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(target);
         }
     }
 }
