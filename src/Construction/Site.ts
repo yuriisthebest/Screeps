@@ -12,6 +12,14 @@ export class Site {
     }
 
     /**
+     * Room (controller) requirements that have to be met
+     */
+    requirements(): boolean {
+        console.log(`"requirements()" is not implemented for class: ${this.constructor.name}`);
+        return false;
+    }
+
+    /**
      * Every construction site should implement the requirements for building the site
      */
     should_build(): boolean {

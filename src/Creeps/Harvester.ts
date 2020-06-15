@@ -1,5 +1,5 @@
 import { Search } from "utils/Find";
-import { BasicCreepManager } from "./AbstractCreep";
+import { BasicCreepManager } from "./BasicCreep";
 
 export class Harvester extends BasicCreepManager {
 
@@ -32,6 +32,7 @@ export class Harvester extends BasicCreepManager {
         // Fetch from in order: [resource(on ground), tombstones, container, sources]
         let energy_resources = [FIND_DROPPED_RESOURCES,
             FIND_TOMBSTONES,
+            FIND_RUINS,
             STRUCTURE_CONTAINER,
             FIND_SOURCES_ACTIVE]
         this.fetch_energy(creep, energy_resources)

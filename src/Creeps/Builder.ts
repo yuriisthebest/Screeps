@@ -1,4 +1,4 @@
-import { BasicCreepManager } from "./AbstractCreep";
+import { BasicCreepManager } from "./BasicCreep";
 
 export class Builder extends BasicCreepManager {
 
@@ -29,6 +29,7 @@ export class Builder extends BasicCreepManager {
     collect_energy(creep: Creep) {
         let energy_resources = [FIND_DROPPED_RESOURCES,
             FIND_TOMBSTONES,
+            FIND_RUINS,
             STRUCTURE_CONTAINER,
             FIND_SOURCES_ACTIVE]
         this.fetch_energy(creep, energy_resources)
@@ -42,11 +43,11 @@ export class Builder extends BasicCreepManager {
         let progressed_site = sites.pop();
         if (progressed_site == undefined) { }
         else {
-            let lowest_work = progressed_site.progressTotal - progressed_site.progress;
+            let lowest_work = progressed_site.progress / progressed_site.progressTotal;
             for (const site of sites) {
-                const work_left = site.progressTotal - site.progress;
-                if (lowest_work == undefined || work_left < lowest_work) {
-                    lowest_work = work_left;
+                const work_done = site.progress / site.progressTotal;
+                if (work_done > lowest_work) {
+                    lowest_work = work_done;
                     progressed_site = site;
                 }
             }

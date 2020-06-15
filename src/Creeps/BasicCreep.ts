@@ -48,23 +48,41 @@ export class BasicCreepManager {
         //  If so, get that energy and stop looking
         let target = null;
         for (const resource_location of energy_resources) {
+            // Find constants (used for sources, tombstones, ruins) are numbers
             if (typeof resource_location == "number") {
                 target = creep.pos.findClosestByPath(resource_location,
                     { filter: (struc) => this.filter_available_energy });
             } else {
-                // A container is not a number
+                // A strucutres (such as containers) are not a number
                 target = creep.pos.findClosestByPath(
                     Search.search_structures(creep.room,
                         [STRUCTURE_CONTAINER],
                         this.filter_available_energy));
             }
-            if (target) {
-                if (Transfer.take_energy(creep, target) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(target);
-                }
-                // Creep is gathering energy, stop looking for other sources
+            // Tranfer from target or Move to target
+            if (this.gather_move(creep, target)) {
+                // If a target was found, stop looking for other targets
                 break;
             }
         }
+    }
+
+    /**
+     * Order a creep to take energy from a target, or move to it if out of reach
+     *  Return false if the target is null
+     *
+     * @param creep Creep to order
+     * @param target Target to take energy from
+     */
+    protected gather_move(creep: Creep, target: any): boolean {
+        // Tranfer from target or Move to target
+        if (target) {
+            if (Transfer.take_energy(creep, target) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(target);
+            }
+            // Creep is gathering energy, stop looking for other sources
+            return true;
+        }
+        return false;
     }
 }

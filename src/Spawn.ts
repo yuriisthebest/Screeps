@@ -29,7 +29,7 @@ export class SpawnManager {
             }
             // Critical creeps:
             //  Harvester: is critical if there are no creeps
-            if (spawner.room.find(FIND_MY_CREEPS).length < 5
+            if (spawner.room.find(FIND_MY_CREEPS).length < 4
                 && available_energy > 200) {
                 this.spawn(spawner,
                     this.determine_body(available_energy, CreepType.harvester),
@@ -65,16 +65,22 @@ export class SpawnManager {
      * === Spawnable creeps ===
      * Harvester - Never
      * Builder - +1 construction sites and <2 builders
+     * Collector - +1 available containers
      */
     determine_role(spawner: StructureSpawn): CreepType {
         // Spawn builder
         if (spawner.room.find(FIND_MY_CONSTRUCTION_SITES).length > 0
             && Search.search_creeps(spawner.room, [CreepType.builder]).length < 2) {
             return CreepType.builder;
-        } else {
-            // No proper role to spawn found
-            return -1;
         }
+        // Spawn collector
+        if (Search.search_creeps(spawner.room, [CreepType.collector]).length
+            < Search.search_structures(spawner.room, [STRUCTURE_CONTAINER]).length) {
+            return CreepType.collector;
+        }
+
+        // No proper role to spawn found
+        return -1;
     }
 
     /**

@@ -7,6 +7,11 @@ export class Container extends Site {
         super(room);
     }
 
+    // Containers have no level requirement
+    requirements(): boolean {
+        return true;
+    }
+
     // Create containers when available
     //  # containers < 5
     //  1 container per source and mineral

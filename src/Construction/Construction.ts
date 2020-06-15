@@ -22,7 +22,7 @@ export class BasicConstruction {
             // All possible sites
             const sites = [new Extension(room), new Container(room)]
             for (const site of sites) {
-                if (site.should_build()) {
+                if (site.requirements && site.should_build()) {
                     let position = site.placement();
                     this.construct(room, position, site.get_structure_constant())
                 }

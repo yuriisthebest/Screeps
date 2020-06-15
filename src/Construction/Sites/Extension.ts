@@ -7,6 +7,14 @@ export class Extension extends Site {
         super(room);
     }
 
+    // Extensions can only be placed from level 2 in a room with a controller
+    requirements(): boolean {
+        if (this.room.controller == null) {
+            return false;
+        }
+        return this.room.controller.level >= 2;
+    }
+
     // Create extensions when available
     should_build(): boolean {
         if (this.room.controller == undefined) { return false }
