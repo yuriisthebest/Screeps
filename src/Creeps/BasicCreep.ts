@@ -33,14 +33,14 @@ export class BasicCreepManager {
      * @param struct The structure to check whether it has energy
      */
     protected filter_available_energy(struct: any): boolean {
-        return struct.store.getUsedCapacity(RESOURCE_ENERGY) != 0;
+        return struct.store.getUsedCapacity(RESOURCE_ENERGY) > 200;
     }
 
     /**
      * Order a creep to get energy from a place
      *
      * @param creep The creep which is ordered
-     * @param energy_resources A
+     * @param energy_resources A strucutre or source containing energy
      */
     protected fetch_energy(creep: Creep,
         energy_resources: (StructureConstant | FindConstant)[]) {
@@ -53,10 +53,10 @@ export class BasicCreepManager {
                 target = creep.pos.findClosestByPath(resource_location,
                     { filter: (struc) => this.filter_available_energy });
             } else {
-                // A strucutres (such as containers) are not a number
+                // A strucutres (such as containers) have no FIND constant
                 target = creep.pos.findClosestByPath(
                     Search.search_structures(creep.room,
-                        [STRUCTURE_CONTAINER],
+                        [resource_location],
                         this.filter_available_energy));
             }
             // Tranfer from target or Move to target

@@ -5,10 +5,6 @@ export class Site {
     public room: NonNullRoom;
     constructor(room: NonNullRoom) {
         this.room = room;
-        // if (room.controller == null) { this.room = new Room('a') }
-        // else {
-        //     this.room = room;
-        // }
     }
 
     /**

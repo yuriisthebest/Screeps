@@ -17,23 +17,16 @@ export class Collector extends BasicCreepManager {
                     { filter: (creep: Creep) => creep.memory.role == CreepType.collector && creep.pos.isNearTo(cont.pos) })
                 if (nearby == null) { return true }
                 else { return nearby == creep }
-
-                // const all_collectors = Search.search_creeps(cont.room, [CreepType.collector])
-                // if (all_collectors.length > 0) {
-                //     return cont.pos.findClosestByRange(FIND_CREEPS,
-                //         {filter: (creep: Creep) => })
-                // }
-                // return false;
             })
 
         const container = creep.pos.findClosestByRange(containers);
-        // console.log(`test`)
         if (container == null) {
             console.log(`Collector is in room without containers`);
             return;
         }
         // When the collector is on the container, start harvesting
-        if (creep.pos.isEqualTo(container.pos)) {
+        if (container.structureType != STRUCTURE_CONTAINER) { return }
+        if (creep.pos.isEqualTo(container.pos) && container.store.getFreeCapacity() > 20) {
             const target = creep.pos.findInRange(FIND_SOURCES, 1);
             const code = Transfer.take_energy(creep, target.pop());
             if (code != 0) {

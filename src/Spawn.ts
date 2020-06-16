@@ -29,15 +29,16 @@ export class SpawnManager {
             }
             // Critical creeps:
             //  Harvester: is critical if there are no creeps
-            if (spawner.room.find(FIND_MY_CREEPS).length < 4
+            if ((spawner.room.find(FIND_MY_CREEPS).length < 4
+                || Search.search_creeps(spawner.room, [CreepType.harvester]).length < 3)
                 && available_energy > 200) {
                 this.spawn(spawner,
                     this.determine_body(available_energy, CreepType.harvester),
                     'Harvester', { role: CreepType.harvester, task: 1 });
             }
-            // Spawn creep when spawner has +90% energy
-            else if (available_energy / max_available_energy > 0.90) {
-                let role = this.determine_role(spawner);
+            // Spawn creep when spawner and extensions are full
+            else if (available_energy == max_available_energy) {
+                let role = this.determine_role(spawner, available_energy);
                 if (role < 0) return;
                 let body = this.determine_body(available_energy, role);
                 this.spawn(spawner, body, `${CreepType[role]}`, { role: role });
@@ -64,14 +65,14 @@ export class SpawnManager {
      *
      * === Spawnable creeps ===
      * Harvester - Never
-     * Builder - +1 construction sites and <2 builders
-     * Collector - +1 available containers
-     * Repairer - Whenever there are objects that can break
+     * Builder - +1 construction sites and <3 builders
+     * Collector - +1 available containers (requires 550 energy)
+     * Repairer - Whenever there are objects that can break and <1 repairers
      */
-    determine_role(spawner: StructureSpawn): CreepType {
+    determine_role(spawner: StructureSpawn, energy: number): CreepType {
         // Spawn builder
         if (spawner.room.find(FIND_MY_CONSTRUCTION_SITES).length > 0
-            && Search.search_creeps(spawner.room, [CreepType.builder]).length < 2) {
+            && Search.search_creeps(spawner.room, [CreepType.builder]).length < 3) {
             return CreepType.builder;
         }
         // Spawn collector
@@ -79,7 +80,7 @@ export class SpawnManager {
             < Search.search_structures(spawner.room, [STRUCTURE_CONTAINER]).length) {
             return CreepType.collector;
         }
-        if (Search.search_creeps(spawner.room, [CreepType.repairer]).length < 2
+        if (Search.search_creeps(spawner.room, [CreepType.repairer]).length < 1
             && Search.search_structures(spawner.room, [STRUCTURE_CONTAINER,
                 STRUCTURE_ROAD]).length > 0) {
             return CreepType.repairer;
@@ -103,11 +104,25 @@ export class SpawnManager {
         for (const bodypart of body) { available_energy -= BODYPART_COST[bodypart]; }
         let i = 0;
         // Add bodyparts to body in sequence of preferred body shape
-        while (available_energy >= BODYPART_COST[additional_parts[i]] && body.length < 50) {
+        while (available_energy >= BODYPART_COST[additional_parts[i]]
+            && body.length < this.max_parts(creep_type)) {
             body.push(additional_parts[i]);
             available_energy -= BODYPART_COST[additional_parts[i]];
             i = (i + 1) % additional_parts.length;
         }
         return body;
+    }
+
+    /**
+     * Return the maximum amount of parts allocated to this type
+     */
+    max_parts(creep_type: CreepType): number {
+        switch (creep_type) {
+            // Collectors should have a max bodyparts of 1 MOVE and 9 WORK
+            case (CreepType.collector):
+                return 10;
+            default:
+                return 50;
+        }
     }
 }

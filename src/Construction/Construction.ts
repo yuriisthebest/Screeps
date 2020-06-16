@@ -1,5 +1,6 @@
 import { Extension } from "./Sites/Extension"
 import { Container } from "./Sites/Container";
+import { Road } from "./Sites/Road";
 
 export class BasicConstruction {
     /**
@@ -24,7 +25,14 @@ export class BasicConstruction {
             for (const site of sites) {
                 if (site.requirements && site.should_build()) {
                     let position = site.placement();
-                    this.construct(room, position, site.get_structure_constant())
+                    // placement either returns a single position or multiple positions
+                    if (position instanceof RoomPosition) {
+                        this.construct(room, position, site.get_structure_constant());
+                    } else {
+                        // for (const pos of position) {
+                        //     this.construct(room, pos, site.get_structure_constant());
+                        // }
+                    }
                 }
             }
         }
