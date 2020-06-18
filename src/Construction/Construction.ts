@@ -1,6 +1,7 @@
 import { Extension } from "./Sites/Extension"
 import { Container } from "./Sites/Container";
 import { Road } from "./Sites/Road";
+import { Storage } from "./Sites/Storage";
 
 export class BasicConstruction {
     /**
@@ -21,7 +22,7 @@ export class BasicConstruction {
             // The room can check once to build something before going on cooldown
             room.memory.construction_timeout = 113;
             // All possible sites
-            const sites = [new Extension(room), new Container(room)]
+            const sites = [new Extension(room), new Container(room), new Storage(room)]
             for (const site of sites) {
                 if (site.requirements && site.should_build()) {
                     let position = site.placement();

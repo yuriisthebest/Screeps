@@ -29,7 +29,7 @@ export class Collector extends BasicCreepManager {
         if (creep.pos.isEqualTo(container.pos) && container.store.getFreeCapacity() > 20) {
             const target = creep.pos.findInRange(FIND_SOURCES, 1);
             const code = Transfer.take_energy(creep, target.pop());
-            if (code != 0) {
+            if (code != 0 && code != ERR_NOT_ENOUGH_RESOURCES) {
                 console.log(`Collector tried to take energy from source but got code ${code}`)
             }
         } else {

@@ -4,6 +4,7 @@ interface CreepMemory {
     room?: string;
     // working: boolean;
     task?: number;
+    dying: boolean;
 }
 
 interface SpawnMemory {

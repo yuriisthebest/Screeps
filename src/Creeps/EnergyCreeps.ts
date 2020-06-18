@@ -6,9 +6,24 @@ export class EnergyCreep extends BasicCreepManager {
      *  Fetch (task 0): Go to energy source and get energy
      *  Transfer (task 1): Spend energy
      *
+     * Also, creeps that are almost dead should renew themselves
+     *
      * @param creep A Creep to control
      */
     manage(creep: Creep) {
+        // if (creep.ticksToLive != undefined && creep.ticksToLive < 100) {
+        //     creep.memory.dying = true;
+        // } else if (creep.ticksToLive != undefined && creep.ticksToLive > 1200) {
+        //     creep.memory.dying = false;
+        // }
+        // if (creep.memory.dying) {
+        //     const spawn = creep.pos.findClosestByPath(FIND_MY_SPAWNS);
+        //     if (spawn != undefined) {
+        //         if (spawn.renewCreep(creep) == ERR_NOT_IN_RANGE) {
+        //             creep.moveTo(spawn);
+        //         }
+        //     }
+        // } Don't forget to add the else clause when uncommenting
         if (creep.memory.task == 0 || creep.memory.task == null) {
             this.collect_energy(creep);
             if (creep.store[RESOURCE_ENERGY] == creep.store.getCapacity()) {

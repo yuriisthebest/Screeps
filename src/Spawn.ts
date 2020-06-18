@@ -29,19 +29,23 @@ export class SpawnManager {
             }
             // Critical creeps:
             //  Harvester: is critical if there are no creeps
+            //      always keep 3 when below controller level 4
             if ((spawner.room.find(FIND_MY_CREEPS).length < 4
                 || Search.search_creeps(spawner.room, [CreepType.harvester]).length < 3)
-                && available_energy > 200) {
+                && available_energy > 200
+                && (spawner.room.controller?.level == undefined
+                    || spawner.room.controller?.level < 4
+                    || spawner.room.find(FIND_MY_CREEPS).length < 4)) {
                 this.spawn(spawner,
                     this.determine_body(available_energy, CreepType.harvester),
-                    'Harvester', { role: CreepType.harvester, task: 1 });
+                    'Harvester', { role: CreepType.harvester, task: 1, dying: false });
             }
             // Spawn creep when spawner and extensions are full
             else if (available_energy == max_available_energy) {
                 let role = this.determine_role(spawner, available_energy);
                 if (role < 0) return;
                 let body = this.determine_body(available_energy, role);
-                this.spawn(spawner, body, `${CreepType[role]}`, { role: role });
+                this.spawn(spawner, body, `${CreepType[role]}`, { role: role, dying: false });
             } else {
                 // Put spawner on timeout if it didn't spawn anything
                 // spawner.memory.timeout = 10;
@@ -68,22 +72,35 @@ export class SpawnManager {
      * Builder - +1 construction sites and <3 builders
      * Collector - +1 available containers (requires 550 energy)
      * Repairer - Whenever there are objects that can break and <1 repairers
+     * Transporters - when at level 3 and <2 trans
+     * Upgrader - When there is a storage and <1 upgraders
      */
     determine_role(spawner: StructureSpawn, energy: number): CreepType {
-        // Spawn builder
-        if (spawner.room.find(FIND_MY_CONSTRUCTION_SITES).length > 0
-            && Search.search_creeps(spawner.room, [CreepType.builder]).length < 3) {
-            return CreepType.builder;
-        }
         // Spawn collector
         if (Search.search_creeps(spawner.room, [CreepType.collector]).length
             < Search.search_structures(spawner.room, [STRUCTURE_CONTAINER]).length) {
             return CreepType.collector;
         }
+        // Spawn transporter
+        if (spawner.room.controller?.level != undefined && spawner.room.controller.level >= 3
+            && Search.search_creeps(spawner.room, [CreepType.transporter]).length < 2) {
+            return CreepType.transporter;
+        }
+        // Spawn repairer
         if (Search.search_creeps(spawner.room, [CreepType.repairer]).length < 1
             && Search.search_structures(spawner.room, [STRUCTURE_CONTAINER,
                 STRUCTURE_ROAD]).length > 0) {
             return CreepType.repairer;
+        }
+        // Spawn builder
+        if (spawner.room.find(FIND_MY_CONSTRUCTION_SITES).length > 0
+            && Search.search_creeps(spawner.room, [CreepType.builder]).length < 3) {
+            return CreepType.builder;
+        }
+        // Spawn upgrader
+        if (spawner.room.storage != undefined
+            && Search.search_creeps(spawner.room, [CreepType.upgrader]).length < 1) {
+            return CreepType.upgrader;
         }
 
         // No proper role to spawn found
@@ -118,9 +135,18 @@ export class SpawnManager {
      */
     max_parts(creep_type: CreepType): number {
         switch (creep_type) {
-            // Collectors should have a max bodyparts of 1 MOVE and 9 WORK
+            // Harvesters should not be too large
+            case (CreepType.harvester):
+                return 12;
+            // Collectors should have a max bodyparts of 1 MOVE and 7 WORK
             case (CreepType.collector):
-                return 10;
+                return 8;
+            // Transporters transport 100 per 3 parts
+            case (CreepType.transporter):
+                return 18; // 600
+            // Upgraders should not use entire economy for upgrades
+            case (CreepType.upgrader):
+                return 16;
             default:
                 return 50;
         }

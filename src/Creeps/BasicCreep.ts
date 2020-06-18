@@ -33,7 +33,7 @@ export class BasicCreepManager {
      * @param struct The structure to check whether it has energy
      */
     protected filter_available_energy(struct: any): boolean {
-        return struct.store.getUsedCapacity(RESOURCE_ENERGY) > 200;
+        return struct.store.getUsedCapacity(RESOURCE_ENERGY) > 400;
     }
 
     /**
