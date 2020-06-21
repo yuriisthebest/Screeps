@@ -2,6 +2,7 @@ import { ErrorMapper } from "utils/ErrorMapper";
 import { CreepManager } from "Economy";
 import { SpawnManager } from "Spawn";
 import { BasicConstruction } from "Construction/Construction";
+import { CombatManager } from "CombatManager";
 
 // When compiling TS to JS and bundling with rollup, the line numbers and file names in error messages change
 // This utility uses source maps to get the line numbers and file names of the original, TS source code
@@ -14,10 +15,15 @@ export const loop = ErrorMapper.wrapLoop(() => {
     * Spawn creeps (TODO)
     * Build structures (TODO)
     * Delete dead memory
+    * Create pixels
     */
 
+    // Manage Millitia
+    const CM = new CombatManager(Game);
+    CM.manage_towers();
+
     // Harvest resources
-    let HM = new CreepManager(Game);
+    const HM = new CreepManager(Game);
 
     // Spawning creeps, check every 21 ticks
     if (Game.time % 21 == 0) {
@@ -43,5 +49,9 @@ export const loop = ErrorMapper.wrapLoop(() => {
     }
     if (Game.cpu.getUsed() > 10) {
         console.log(`CPU usage: ${Game.cpu.getUsed()}. Bucket: ${Game.cpu.bucket}`)
+    }
+
+    if (Game.cpu.bucket > 9000) {
+        Game.cpu.generatePixel();
     }
 });

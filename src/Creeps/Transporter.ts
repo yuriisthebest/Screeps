@@ -11,7 +11,7 @@ export class Transporter extends EnergyCreep {
      * @param creep Creep without energy
      */
     collect_energy(creep: Creep) {
-        let energy_resources = [STRUCTURE_CONTAINER]
+        let energy_resources = [FIND_DROPPED_RESOURCES, STRUCTURE_CONTAINER]
         this.fetch_energy(creep, energy_resources)
     }
 

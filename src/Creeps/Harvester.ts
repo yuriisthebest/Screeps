@@ -7,7 +7,7 @@ export class Harvester extends EnergyCreep {
         // Transfer in order: [(Extension, spawn), controller]
         let storage: any = creep.pos.findClosestByPath(
             Search.search_structures(creep.room,
-                [STRUCTURE_EXTENSION, STRUCTURE_SPAWN],
+                [STRUCTURE_EXTENSION, STRUCTURE_SPAWN, STRUCTURE_TOWER],
                 this.filter_available_energy_capacity))
         // let storage: any = creep.pos.findClosestByPath(FIND_MY_SPAWNS, { filter: (energy_user: StructureSpawn) => energy_user.store.getFreeCapacity(RESOURCE_ENERGY) != 0 });
         if (storage == null) {

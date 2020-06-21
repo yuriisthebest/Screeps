@@ -34,8 +34,6 @@ export class Extension extends Site {
             console.log('Tried to place extension in room without controller');
             return new RoomPosition(-1, -1, this.room.name);
         }
-        let controller_pos_x = this.room.controller.pos.x;
-        let controller_pos_y = this.room.controller.pos.y;
         let lowest_cost = 1000;
         let best_position: RoomPosition = new RoomPosition(0, 0, this.room.name);
         // Iterate over every tile

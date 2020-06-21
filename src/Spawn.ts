@@ -72,7 +72,7 @@ export class SpawnManager {
      * Builder - +1 construction sites and <3 builders
      * Collector - +1 available containers (requires 550 energy)
      * Repairer - Whenever there are objects that can break and <1 repairers
-     * Transporters - when at level 3 and <2 trans
+     * Transporters - when at level 4 and <2 trans
      * Upgrader - When there is a storage and <1 upgraders
      */
     determine_role(spawner: StructureSpawn, energy: number): CreepType {
@@ -82,7 +82,7 @@ export class SpawnManager {
             return CreepType.collector;
         }
         // Spawn transporter
-        if (spawner.room.controller?.level != undefined && spawner.room.controller.level >= 3
+        if (spawner.room.controller?.level != undefined && spawner.room.controller.level >= 4
             && Search.search_creeps(spawner.room, [CreepType.transporter]).length < 2) {
             return CreepType.transporter;
         }
@@ -94,7 +94,7 @@ export class SpawnManager {
         }
         // Spawn builder
         if (spawner.room.find(FIND_MY_CONSTRUCTION_SITES).length > 0
-            && Search.search_creeps(spawner.room, [CreepType.builder]).length < 3) {
+            && Search.search_creeps(spawner.room, [CreepType.builder]).length < 1) {
             return CreepType.builder;
         }
         // Spawn upgrader
@@ -146,7 +146,7 @@ export class SpawnManager {
                 return 18; // 600
             // Upgraders should not use entire economy for upgrades
             case (CreepType.upgrader):
-                return 16;
+                return 19;
             default:
                 return 50;
         }

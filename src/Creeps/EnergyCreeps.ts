@@ -26,7 +26,7 @@ export class EnergyCreep extends BasicCreepManager {
         // } Don't forget to add the else clause when uncommenting
         if (creep.memory.task == 0 || creep.memory.task == null) {
             this.collect_energy(creep);
-            if (creep.store[RESOURCE_ENERGY] == creep.store.getCapacity()) {
+            if (creep.store.getFreeCapacity() == 0) {
                 creep.memory.task = 1;
                 creep.say("Delivering");
             }
