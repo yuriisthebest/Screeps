@@ -6,6 +6,7 @@ import { Collector } from "Creeps/Collector";
 import { Repair } from "Creeps/Repair";
 import { Transporter } from "Creeps/Transporter";
 import { Upgrader } from "Creeps/Upgrader";
+import { MineralCollector } from "Creeps/MineralCollector";
 
 export enum CreepType {
     harvester = 0,
@@ -14,6 +15,7 @@ export enum CreepType {
     repairer = 3,
     transporter = 4,
     upgrader = 5,
+    mineralist = 6,
 }
 
 export var CreepClasses: { [Key: number]: BasicCreepManager } = {};
@@ -23,3 +25,4 @@ CreepClasses[CreepType.collector] = new Collector();
 CreepClasses[CreepType.repairer] = new Repair();
 CreepClasses[CreepType.transporter] = new Transporter();
 CreepClasses[CreepType.upgrader] = new Upgrader();
+CreepClasses[CreepType.mineralist] = new MineralCollector();

@@ -6,17 +6,22 @@ import { CreepType } from "Constants/globals";
 export class Collector extends BasicCreepManager {
 
     /**
-     * The collector just moves on a container (next to source / deposit) and harvests it
+     * The collector just moves on a container (next to source) and harvests it
      * Currently only implemented for sources
+     *
+     * Find containers next to sources without other collectors nearby
+     * Send collector to it
+     * Harvest source if container has capacity
      */
     manage(creep: Creep): void {
         // Find available container to stand on
         const containers = Search.search_structures(creep.room, [STRUCTURE_CONTAINER],
             (cont: StructureContainer) => {
-                const nearby = cont.pos.findClosestByRange(FIND_CREEPS,
+                const nearby = cont.pos.findClosestByRange(FIND_MY_CREEPS,
                     { filter: (creep: Creep) => creep.memory.role == CreepType.collector && creep.pos.isNearTo(cont.pos) })
-                if (nearby == null) { return true }
-                else { return nearby == creep }
+                const near_source = cont.pos.findInRange(FIND_SOURCES, 1).length > 0;
+                if (nearby == null && near_source) { return true }
+                else { return nearby == creep && near_source }
             })
 
         const container = creep.pos.findClosestByRange(containers);

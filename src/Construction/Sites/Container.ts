@@ -20,18 +20,25 @@ export class Container extends Site {
             + Search.search_construction_site(this.room, [STRUCTURE_CONTAINER]).length)
         if (containers >= 5) { return false; }
         const resources = this.room.find(FIND_SOURCES);
-        // const harvest_count = this.room.find(FIND_MINERALS).length + resources.length;
-        const harvest_count = resources.length;
+        let harvest_count;
+        if (this.room.controller && this.room.controller?.level >= 6) {
+            harvest_count = this.room.find(FIND_MINERALS).length + resources.length;
+        } else {
+            harvest_count = resources.length;
+        }
         if (harvest_count > containers) { return true; }
         return false;
     }
 
     /**
-     * Place an continer such that it is next to a SOURCE, which has no other containers
+     * Place an container next to a SOURCE or MINERAL, which has no other containers
      * Pick position near ???
      */
     placement(): RoomPosition {
-        const resources = this.room.find(FIND_SOURCES);
+        const resources: (Source | Mineral)[] = this.room.find(FIND_SOURCES);
+        for (const min of this.room.find(FIND_MINERALS)) {
+            resources.push(min);
+        }
         let best_position;
         for (const resource of resources) {
             let has_container = false;

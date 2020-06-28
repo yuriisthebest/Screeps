@@ -41,7 +41,7 @@ export class SpawnManager {
                     'Harvester', { role: CreepType.harvester, task: 1, dying: false });
             }
             // Spawn creep when spawner and extensions are full
-            else if (available_energy == max_available_energy) {
+            else if (available_energy / max_available_energy > 0.95) {
                 let role = this.determine_role(spawner, available_energy);
                 if (role < 0) return;
                 let body = this.determine_body(available_energy, role);
@@ -70,15 +70,17 @@ export class SpawnManager {
      * === Spawnable creeps ===
      * Harvester - Never
      * Builder - +1 construction sites and <3 builders
-     * Collector - +1 available containers (requires 550 energy)
+     * Collector - +1 available containers, next to sources (requires 550 energy)
      * Repairer - Whenever there are objects that can break and <1 repairers
      * Transporters - when at level 4 and <2 trans
      * Upgrader - When there is a storage and <1 upgraders
+     * Mineralist - There is a extractor with a active mineral and <1 mineralists
      */
     determine_role(spawner: StructureSpawn, energy: number): CreepType {
         // Spawn collector
         if (Search.search_creeps(spawner.room, [CreepType.collector]).length
-            < Search.search_structures(spawner.room, [STRUCTURE_CONTAINER]).length) {
+            < _.min([Search.search_structures(spawner.room, [STRUCTURE_CONTAINER]).length,
+            spawner.room.find(FIND_SOURCES).length])) {
             return CreepType.collector;
         }
         // Spawn transporter
@@ -101,6 +103,14 @@ export class SpawnManager {
         if (spawner.room.storage != undefined
             && Search.search_creeps(spawner.room, [CreepType.upgrader]).length < 1) {
             return CreepType.upgrader;
+        }
+        // Spawn mineralist
+        const mineral = spawner.room.find(FIND_MINERALS).pop()
+        if (Search.search_creeps(spawner.room, [CreepType.mineralist]).length < 1
+            && mineral != undefined
+            && mineral.ticksToRegeneration < 200
+            && Search.search_structures(spawner.room, [STRUCTURE_EXTRACTOR]).length > 1) {
+            return CreepType.mineralist;
         }
 
         // No proper role to spawn found

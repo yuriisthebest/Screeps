@@ -51,6 +51,7 @@ export const loop = ErrorMapper.wrapLoop(() => {
         console.log(`CPU usage: ${Game.cpu.getUsed()}. Bucket: ${Game.cpu.bucket}`)
     }
 
+    // Buy a pixel if the bucket is almost full.
     if (Game.cpu.bucket > 9000) {
         Game.cpu.generatePixel();
     }
