@@ -1,12 +1,13 @@
 // All implemented creep types
 import { BasicCreepManager } from "Creeps/BasicCreep";
-import { Harvester } from "Creeps/Harvester";
 import { Builder } from "Creeps/Builder";
 import { Collector } from "Creeps/Collector";
+import { Harvester } from "Creeps/Harvester";
+import { MineralCollector } from "Creeps/MineralCollector";
 import { Repair } from "Creeps/Repair";
+import { Trader } from "Creeps/Trader";
 import { Transporter } from "Creeps/Transporter";
 import { Upgrader } from "Creeps/Upgrader";
-import { MineralCollector } from "Creeps/MineralCollector";
 
 export enum CreepType {
     harvester = 0,
@@ -16,6 +17,8 @@ export enum CreepType {
     transporter = 4,
     upgrader = 5,
     mineralist = 6,
+    mega_upgrader = 7,
+    trader = 8,
 }
 
 export var CreepClasses: { [Key: number]: BasicCreepManager } = {};
@@ -26,3 +29,5 @@ CreepClasses[CreepType.repairer] = new Repair();
 CreepClasses[CreepType.transporter] = new Transporter();
 CreepClasses[CreepType.upgrader] = new Upgrader();
 CreepClasses[CreepType.mineralist] = new MineralCollector();
+CreepClasses[CreepType.mega_upgrader] = new Upgrader();
+CreepClasses[CreepType.trader] = new Trader();

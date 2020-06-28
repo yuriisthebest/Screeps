@@ -37,6 +37,23 @@ export class BasicCreepManager {
     }
 
     /**
+     * Filter function to be used in Search, find or look tasks
+     *  Returns true when the structure has some amount of minerals, aka is not empty
+     *
+     * @param struct The structure to check whether it has energy
+     */
+    protected filter_available_minerals(struct: StructureStorage | StructureContainer): boolean {
+        for (const mineral of [RESOURCE_UTRIUM, RESOURCE_LEMERGIUM,
+            RESOURCE_KEANIUM, RESOURCE_ZYNTHIUM, RESOURCE_OXYGEN,
+            RESOURCE_HYDROGEN, RESOURCE_CATALYST]) {
+            if (struct.store.getUsedCapacity(mineral) > 1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Order a creep to get energy from a place
      *
      * @param creep The creep which is ordered
@@ -59,6 +76,32 @@ export class BasicCreepManager {
                         [resource_location],
                         this.filter_available_energy));
             }
+            // Tranfer from target or Move to target
+            if (this.gather_move(creep, target)) {
+                // If a target was found, stop looking for other targets
+                break;
+            }
+        }
+    }
+
+    /**
+     * Order a creep to get minerals from a place
+     * This place will always be a structure
+     *
+     * @param creep The creep which is ordered
+     * @param mineral_structure A strucutre or source containing energy
+     */
+    protected fetch_minerals(creep: Creep,
+        mineral_structure: (StructureConstant)[]) {
+        // Check for each given structure if there are places with minerals
+        //  If so, get that mineral and stop looking
+        let target = null;
+        for (const resource_location of mineral_structure) {
+            // A strucutres (such as containers)
+            target = creep.pos.findClosestByPath(
+                Search.search_structures(creep.room,
+                    [resource_location],
+                    this.filter_available_minerals));
             // Tranfer from target or Move to target
             if (this.gather_move(creep, target)) {
                 // If a target was found, stop looking for other targets

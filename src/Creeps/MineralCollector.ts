@@ -31,6 +31,10 @@ export class MineralCollector extends BasicCreepManager {
         }
         // When the mineralist is on the container, start harvesting if container has space
         if (container.structureType != STRUCTURE_CONTAINER) { return }
+        const extractor = Search.search_structures(creep.room, [STRUCTURE_EXTRACTOR]).pop()
+        // Do nothing (harvest) when there is a extractor with a cooldown
+        if (extractor instanceof StructureExtractor
+            && extractor.cooldown > 0) { return }
         if (creep.pos.isEqualTo(container.pos)
             && container.store.getFreeCapacity() > creep.getActiveBodyparts(WORK)) {
             const target = creep.pos.findInRange(FIND_MINERALS, 1);

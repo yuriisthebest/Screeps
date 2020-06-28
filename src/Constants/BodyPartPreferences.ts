@@ -13,6 +13,8 @@ BodyPartsRequired[CreepType.repairer] = [MOVE, CARRY, WORK];
 BodyPartsRequired[CreepType.transporter] = [MOVE, CARRY, CARRY];
 BodyPartsRequired[CreepType.upgrader] = [MOVE, CARRY];
 BodyPartsRequired[CreepType.mineralist] = [MOVE, WORK, WORK]
+BodyPartsRequired[CreepType.mega_upgrader] = [MOVE, CARRY];
+BodyPartsRequired[CreepType.trader] = [MOVE, CARRY, CARRY];
 
 /**
  * Dictionary to indicate the additional composition of body parts for each creep
@@ -25,3 +27,5 @@ BodyPartsAdditional[CreepType.repairer] = [MOVE, CARRY, WORK];
 BodyPartsAdditional[CreepType.transporter] = [MOVE, CARRY, CARRY];
 BodyPartsAdditional[CreepType.upgrader] = [WORK, WORK, WORK, WORK, WORK, CARRY];
 BodyPartsAdditional[CreepType.mineralist] = [WORK, WORK, WORK, WORK, MOVE]
+BodyPartsAdditional[CreepType.mega_upgrader] = [WORK, WORK, WORK, WORK, WORK, CARRY];
+BodyPartsAdditional[CreepType.trader] = [MOVE, CARRY, CARRY];

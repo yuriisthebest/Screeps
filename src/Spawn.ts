@@ -74,7 +74,9 @@ export class SpawnManager {
      * Repairer - Whenever there are objects that can break and <1 repairers
      * Transporters - when at level 4 and <2 trans
      * Upgrader - When there is a storage and <1 upgraders
+     * Mega_upgrader - when the storage is filled with 300.000 energy
      * Mineralist - There is a extractor with a active mineral and <1 mineralists
+     * Trader - There is an extractor and terminal and <1 traders
      */
     determine_role(spawner: StructureSpawn, energy: number): CreepType {
         // Spawn collector
@@ -96,7 +98,7 @@ export class SpawnManager {
         }
         // Spawn builder
         if (spawner.room.find(FIND_MY_CONSTRUCTION_SITES).length > 0
-            && Search.search_creeps(spawner.room, [CreepType.builder]).length < 1) {
+            && Search.search_creeps(spawner.room, [CreepType.builder]).length < 2) {
             return CreepType.builder;
         }
         // Spawn upgrader
@@ -104,13 +106,25 @@ export class SpawnManager {
             && Search.search_creeps(spawner.room, [CreepType.upgrader]).length < 1) {
             return CreepType.upgrader;
         }
+        // Spawn mega_upgrader
+        if (spawner.room.storage != undefined
+            && Search.search_creeps(spawner.room, [CreepType.mega_upgrader]).length < 1
+            && spawner.room.storage.store.getUsedCapacity(RESOURCE_ENERGY) > 300000) {
+            return CreepType.mega_upgrader;
+        }
         // Spawn mineralist
         const mineral = spawner.room.find(FIND_MINERALS).pop()
         if (Search.search_creeps(spawner.room, [CreepType.mineralist]).length < 1
             && mineral != undefined
-            && mineral.ticksToRegeneration < 200
-            && Search.search_structures(spawner.room, [STRUCTURE_EXTRACTOR]).length > 1) {
+            && (mineral.ticksToRegeneration < 200 || mineral.mineralAmount > 0)
+            && Search.search_structures(spawner.room, [STRUCTURE_EXTRACTOR]).length > 0) {
             return CreepType.mineralist;
+        }
+        // Spawn trader
+        if (Search.search_creeps(spawner.room, [CreepType.trader]).length < 1
+            && spawner.room.terminal != undefined
+            && Search.search_structures(spawner.room, [STRUCTURE_EXTRACTOR]).length > 0) {
+            return CreepType.trader;
         }
 
         // No proper role to spawn found
@@ -154,6 +168,9 @@ export class SpawnManager {
             // Transporters transport 100 per 3 parts
             case (CreepType.transporter):
                 return 18; // 600
+            // Traders transport 100 per 3 parts
+            case (CreepType.trader):
+                return 9; // 300
             // Upgraders should not use entire economy for upgrades
             case (CreepType.upgrader):
                 return 19;

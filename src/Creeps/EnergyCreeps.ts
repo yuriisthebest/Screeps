@@ -11,6 +11,7 @@ export class EnergyCreep extends BasicCreepManager {
      * @param creep A Creep to control
      */
     manage(creep: Creep) {
+        // CODE TO RENEW CREEPS
         // if (creep.ticksToLive != undefined && creep.ticksToLive < 100) {
         //     creep.memory.dying = true;
         // } else if (creep.ticksToLive != undefined && creep.ticksToLive > 1200) {
@@ -23,7 +24,7 @@ export class EnergyCreep extends BasicCreepManager {
         //             creep.moveTo(spawn);
         //         }
         //     }
-        // } Don't forget to add the else clause when uncommenting
+        // } Don't forget to add the else clause for other tasks when uncommenting
         if (creep.memory.task == 0 || creep.memory.task == null) {
             this.collect_energy(creep);
             if (creep.store.getFreeCapacity() == 0) {

@@ -4,6 +4,7 @@ import { Road } from "./Sites/Road";
 import { Storage } from "./Sites/Storage";
 import { Tower } from "./Sites/Tower";
 import { Extractor } from "./Sites/Extractor";
+import { Terminal } from "./Sites/Terminal";
 
 export class BasicConstruction {
     /**
@@ -28,7 +29,8 @@ export class BasicConstruction {
             new Container(room),
             new Storage(room),
             new Tower(room),
-            new Extractor(room)]
+            new Extractor(room),
+            new Terminal(room)]
             for (const site of sites) {
                 if (site.requirements() && site.should_build()) {
                     let position = site.placement();
