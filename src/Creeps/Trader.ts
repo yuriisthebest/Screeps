@@ -30,7 +30,7 @@ export class Trader extends BasicCreepManager {
     // Collect minerals
     collect_minerals(creep: Creep) {
         let storage = [STRUCTURE_STORAGE, STRUCTURE_CONTAINER]
-        this.fetch_minerals(creep, storage)
+        this.fetch_minerals(creep, storage);
     }
 
     // Go to terminal and give minerals

@@ -5,15 +5,16 @@ export class Transfer {
      *
      * @param creep The creep which want to take energy from some specific place
      * @param object The place where the creep want to take energy from
+     * @param resource The resource the creep should take from a structure (Default: Energy)
      * @returns The API number associated with the task
      */
-    static take_energy(creep: Creep, object: any): number {
+    static take_energy(creep: Creep, object: any, resource: ResourceConstant = RESOURCE_ENERGY): number {
         if (object instanceof Resource) {
             return creep.pickup(object);
         } else if (object instanceof Ruin
             || object instanceof Tombstone
             || object instanceof Structure) {
-            return creep.withdraw(object, RESOURCE_ENERGY)
+            return creep.withdraw(object, resource)
         } else if (object instanceof Source
             || object instanceof Mineral) {
             return creep.harvest(object);

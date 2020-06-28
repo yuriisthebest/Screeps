@@ -3,6 +3,7 @@ import { CreepManager } from "Economy";
 import { SpawnManager } from "Spawn";
 import { BasicConstruction } from "Construction/Construction";
 import { CombatManager } from "CombatManager";
+import { Market } from "SellMarket";
 
 // When compiling TS to JS and bundling with rollup, the line numbers and file names in error messages change
 // This utility uses source maps to get the line numbers and file names of the original, TS source code
@@ -40,6 +41,8 @@ export const loop = ErrorMapper.wrapLoop(() => {
         const room = Game.rooms[room_id];
         BasicConstruction.manage_construction(room);
     }
+    // Trade with other players
+    const M = new Market(Game);
 
     // Automatically delete memory of missing creeps
     for (const name in Memory.creeps) {
@@ -47,6 +50,7 @@ export const loop = ErrorMapper.wrapLoop(() => {
             delete Memory.creeps[name];
         }
     }
+    // Log heavy CPU use
     if (Game.cpu.getUsed() > 10) {
         console.log(`CPU usage: ${Game.cpu.getUsed()}. Bucket: ${Game.cpu.bucket}`)
     }

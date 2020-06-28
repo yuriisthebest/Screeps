@@ -76,7 +76,7 @@ export class SpawnManager {
      * Upgrader - When there is a storage and <1 upgraders
      * Mega_upgrader - when the storage is filled with 300.000 energy
      * Mineralist - There is a extractor with a active mineral and <1 mineralists
-     * Trader - There is an extractor and terminal and <1 traders
+     * Trader - There is an extractor and terminal and >0 mineralists and <1 traders
      */
     determine_role(spawner: StructureSpawn, energy: number): CreepType {
         // Spawn collector
@@ -122,6 +122,7 @@ export class SpawnManager {
         }
         // Spawn trader
         if (Search.search_creeps(spawner.room, [CreepType.trader]).length < 1
+            && Search.search_creeps(spawner.room, [CreepType.mineralist]).length > 0
             && spawner.room.terminal != undefined
             && Search.search_structures(spawner.room, [STRUCTURE_EXTRACTOR]).length > 0) {
             return CreepType.trader;

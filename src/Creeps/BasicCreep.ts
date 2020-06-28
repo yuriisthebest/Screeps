@@ -102,10 +102,20 @@ export class BasicCreepManager {
                 Search.search_structures(creep.room,
                     [resource_location],
                     this.filter_available_minerals));
-            // Tranfer from target or Move to target
-            if (this.gather_move(creep, target)) {
-                // If a target was found, stop looking for other targets
-                break;
+            // For a storage or container
+            // Check all minerals
+            // If it contains it, try to retrieve it
+            if (target instanceof StructureStorage || target instanceof StructureContainer) {
+                for (const resource of [RESOURCE_UTRIUM, RESOURCE_LEMERGIUM,
+                    RESOURCE_KEANIUM, RESOURCE_ZYNTHIUM, RESOURCE_OXYGEN,
+                    RESOURCE_HYDROGEN, RESOURCE_CATALYST])
+                    if (target.store.getUsedCapacity(resource) > 0) {
+                        // Tranfer from target or Move to target
+                        if (this.gather_move(creep, target, resource)) {
+                            // If a target was found, stop looking for other targets
+                            break;
+                        }
+                    }
             }
         }
     }
@@ -116,11 +126,12 @@ export class BasicCreepManager {
      *
      * @param creep Creep to order
      * @param target Target to take energy from
+     * @param resource Resource to take (energy by default)
      */
-    protected gather_move(creep: Creep, target: any): boolean {
+    protected gather_move(creep: Creep, target: any, resource: ResourceConstant = RESOURCE_ENERGY): boolean {
         // Tranfer from target or Move to target
         if (target) {
-            if (Transfer.take_energy(creep, target) == ERR_NOT_IN_RANGE) {
+            if (Transfer.take_energy(creep, target, resource) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(target);
             }
             // Creep is gathering energy, stop looking for other sources
