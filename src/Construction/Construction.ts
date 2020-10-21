@@ -23,7 +23,7 @@ export class BasicConstruction {
         else if (room.memory.construction_timeout > 0) { room.memory.construction_timeout -= 1 }
         else {
             // The room can check once to build something before going on cooldown
-            room.memory.construction_timeout = 113;
+            room.memory.construction_timeout = ((room.name == 'sim') ? 10 : 113);
             // All possible sites
             const sites = [new Extension(room),
             new Container(room),

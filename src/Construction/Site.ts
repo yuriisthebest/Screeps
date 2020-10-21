@@ -47,7 +47,7 @@ export class Site {
      * @param distance The distance from which to check
      */
     protected near_wall(room: Room, pos: RoomPosition, distance: number): boolean {
-        const terrain = new Room.Terrain(room.name);
+        const terrain = Game.map.getRoomTerrain(room.name);
         for (const x of _.range(-distance, distance + 1)) {
             for (const y of _.range(-distance, distance + 1)) {
                 // If a lation in the terrain is a wall, then the given position is near a wall

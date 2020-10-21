@@ -59,9 +59,12 @@ export class SpawnManager {
         Execute the spawn command and give spawner proper timeout
         */
         console.log(`Spawning ${name}`)
-        spawner.spawnCreep(components,
+        const code = spawner.spawnCreep(components,
             name + Math.floor(Math.random() * 100000),
             { memory: intial_memory });
+        if (code != OK) {
+            console.log(`Spawning failed with code ${code}`)
+        }
     }
 
     /**
