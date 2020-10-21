@@ -31,3 +31,8 @@ CreepClasses[CreepType.upgrader] = new Upgrader();
 CreepClasses[CreepType.mineralist] = new MineralCollector();
 CreepClasses[CreepType.mega_upgrader] = new Upgrader();
 CreepClasses[CreepType.trader] = new Trader();
+
+
+export var Flag_color: { [Key: string]: ColorConstant } = {};
+Flag_color['storage'] = COLOR_WHITE;
+Flag_color['extension'] = COLOR_YELLOW;
