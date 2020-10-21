@@ -60,10 +60,8 @@ export class Extension extends Site {
     }
 
     /**
-     * Place an extension such that it is not within 2 tiles of wall, not near other structures
-     * Close to a source, spawn and controller
-     *
-     * Better, Place extensions around diagonal paths near the controller (storage)
+     * Place extensions around diagonal paths near the controller (storage)
+     *  Better than old method
      *
      * Place a flag near the storage to indicate the start of a diagonal path
      *  The diagonal path will move away from the storage, with MAX_LENGTH 6
@@ -151,8 +149,6 @@ export class Extension extends Site {
      * Extensions must be build on a free place and should not touch a wall
      */
     valid_position(pos: RoomPosition): Boolean {
-        // if (pos.x < 1 || pos.x > 48) { return false; }
-        // if (pos.y < 1 || pos.y > 48) { return false; }
         if (pos.lookFor(LOOK_STRUCTURES).length >= 1) { return false; }
         if (pos.lookFor(LOOK_CONSTRUCTION_SITES).length >= 1) { return false; }
         if (Game.map.getRoomTerrain(this.room.name).get(pos.x, pos.y) == TERRAIN_MASK_WALL) { return false }
