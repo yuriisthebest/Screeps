@@ -58,7 +58,7 @@ export class SpawnManager {
         /*
         Execute the spawn command and give spawner proper timeout
         */
-        console.log(`Spawning ${name}`)
+        console.log(`Spawning ${name}: ${components}`)
         const code = spawner.spawnCreep(components,
             name + Math.floor(Math.random() * 100000),
             { memory: intial_memory });
@@ -143,7 +143,7 @@ export class SpawnManager {
      */
     determine_body(available_energy: number, creep_type: CreepType): BodyPartConstant[] {
         // Mandatory body parts
-        let body: BodyPartConstant[] = BodyPartsRequired[creep_type];
+        let body: BodyPartConstant[] = BodyPartsRequired[creep_type].slice();
         const additional_parts = BodyPartsAdditional[creep_type];
         // Remove the required energy cost from available energy
         for (const bodypart of body) { available_energy -= BODYPART_COST[bodypart]; }

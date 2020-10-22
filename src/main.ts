@@ -57,6 +57,7 @@ export const loop = ErrorMapper.wrapLoop(() => {
 
     // Buy a pixel if the bucket is almost full.
     if (Game.cpu.bucket > 9000) {
-        Game.cpu.generatePixel();
+        // Private servers are not able to generate pixels
+        try { Game.cpu.generatePixel(); } catch { };
     }
 });
