@@ -36,3 +36,4 @@ CreepClasses[CreepType.trader] = new Trader();
 export var Flag_color: { [Key: string]: ColorConstant } = {};
 Flag_color['storage'] = COLOR_WHITE;
 Flag_color['extension'] = COLOR_YELLOW;
+Flag_color['debug'] = COLOR_GREY;

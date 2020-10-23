@@ -13,6 +13,7 @@ interface SpawnMemory {
 
 interface RoomMemory {
     construction_timeout: number;
+    walls: RoomPosition[];
 }
 
 interface Memory {

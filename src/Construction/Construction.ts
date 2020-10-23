@@ -5,6 +5,8 @@ import { Storage } from "./Sites/Storage";
 import { Tower } from "./Sites/Tower";
 import { Extractor } from "./Sites/Extractor";
 import { Terminal } from "./Sites/Terminal";
+import { Wall } from "./Sites/Wall";
+import { Flag_color } from "Constants/globals";
 
 export class BasicConstruction {
     /**
@@ -30,7 +32,8 @@ export class BasicConstruction {
             new Storage(room),
             new Tower(room),
             new Extractor(room),
-            new Terminal(room)]
+            new Terminal(room),
+            new Wall(room)]
             for (const site of sites) {
                 if (site.requirements() && site.should_build()) {
                     let position = site.placement();
@@ -38,9 +41,10 @@ export class BasicConstruction {
                     if (position instanceof RoomPosition) {
                         this.construct(room, position, site.get_structure_constant());
                     } else {
-                        // for (const pos of position) {
-                        //     this.construct(room, pos, site.get_structure_constant());
-                        // }
+                        for (const pos of position) {
+                            // pos.createFlag(`Construction site ${Math.floor(Math.random() * 100000)}`, Flag_color['debug'], Flag_color['debug'])
+                            this.construct(room, pos, site.get_structure_constant());
+                        }
                     }
                 }
             }
