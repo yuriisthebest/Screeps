@@ -155,7 +155,20 @@ export class SpawnManager {
             available_energy -= BODYPART_COST[additional_parts[i]];
             i = (i + 1) % additional_parts.length;
         }
-        return body;
+        return this.sort_body(body);
+    }
+
+    /**
+     * Take bodyparts and sort them so creeps have proper damage control
+     *
+     * @param body List of body parts to sort
+     */
+    sort_body(body: BodyPartConstant[]): BodyPartConstant[] {
+        const priority = [TOUGH, WORK, CARRY, ATTACK, RANGED_ATTACK, HEAL, CLAIM, MOVE]
+        return body.sort((part1, part2) => {
+            return priority.findIndex((value, index, obj) => value == part1)
+                - priority.findIndex((value, index, obj) => value == part2)
+        })
     }
 
     /**

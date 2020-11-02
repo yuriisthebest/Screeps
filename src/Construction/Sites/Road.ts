@@ -12,13 +12,20 @@ export class Road extends Site {
     }
 
     /**
-     * Road requirements
+     * Roads should be build when there are roads missing from the network
      */
     should_build(): boolean {
-        return true;
+        return false;
     }
 
     /**
+     * Roads should be build around special structures:
+     *  Spawn, Containers, Storage
+     * And roads should be build to storage from:
+     *  Spawn, Containers, Extension flags, ~Room Entranches, ~Towers, ~Industry
+     * Also note roads should be:
+     *  Within extension rows?
+     *
      * Return the position of a valid, best palce to build the site
      */
     placement(): RoomPosition | RoomPosition[] {

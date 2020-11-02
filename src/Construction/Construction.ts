@@ -7,6 +7,7 @@ import { Extractor } from "./Sites/Extractor";
 import { Terminal } from "./Sites/Terminal";
 import { Wall } from "./Sites/Wall";
 import { Flag_color } from "Constants/globals";
+import { Rampart } from "./Sites/Rampart";
 
 export class BasicConstruction {
     /**
@@ -34,6 +35,7 @@ export class BasicConstruction {
             new Extractor(room),
             new Terminal(room),
             new Wall(room)]
+            // new Rampart(room)]
             for (const site of sites) {
                 if (site.requirements() && site.should_build()) {
                     let position = site.placement();

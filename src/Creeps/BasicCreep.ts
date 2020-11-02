@@ -132,7 +132,7 @@ export class BasicCreepManager {
         // Tranfer from target or Move to target
         if (target) {
             if (Transfer.take_energy(creep, target, resource) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(target);
+                creep.moveTo(target, { maxRooms: 1 });
             }
             // Creep is gathering energy, stop looking for other sources
             return true;

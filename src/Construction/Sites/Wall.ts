@@ -5,7 +5,7 @@ import { Site } from "Construction/Site";
  * They are checked every build tick to build or rebuild broken walls
  *
  * Walls are build around room exits to limit enemy movement
- * TODO: Holes with ramparts are placed every two spaces to travel and defend
+ * Leave holes for ramparts every three spaces to travel and defend
  */
 export class Wall extends Site {
     /**
@@ -147,14 +147,34 @@ export class Wall extends Site {
             neighbor = exit;
         }
         // Remove undestructable terrain from wall positions
-        wall_positions.forEach((wall, index) => {
-            if (Game.map.getRoomTerrain(wall.roomName).get(wall.x, wall.y) == TERRAIN_MASK_WALL) {
-                wall_positions.splice(index, 1);
-            }
+        var positions = wall_positions.filter(function (wall, index, arr) {
+            return Game.map.getRoomTerrain(wall.roomName).get(wall.x, wall.y) != TERRAIN_MASK_WALL
+        })
+        // TODO: Add gates and remove walls from those places
+        var gates = this.assign_gates(positions)
+        var positions = positions.filter(function (wall, index, arr) {
+            return !gates.includes(wall)
         })
         // Store the wall positions in memory
-        this.room.memory.walls = wall_positions;
-        return wall_positions;
+        this.room.memory.walls = positions;
+        return positions;
+    }
+
+    /**
+     * Determine where in the wall holes should go for entrances
+     * Leave a space every 3 spaces
+     * Do not remove the
+     *
+     * @param wall_positions List of positions where walls should be created
+     */
+    assign_gates(wall_positions: RoomPosition[]): RoomPosition[] {
+        var gates: RoomPosition[] = [];
+        for (const wall of wall_positions) {
+            if (wall.x % 3 == 0 && wall.x != 48) { gates.push(wall) }
+            if (wall.y % 3 == 0 && wall.y != 48) { gates.push(wall) }
+        }
+        this.room.memory.gates = gates;
+        return gates
     }
 
     /**
