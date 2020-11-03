@@ -13,18 +13,18 @@ export class Repair extends EnergyCreep {
      */
     transfer_energy(creep: Creep) {
         // Find all broken structures that aren't walls or ramparts
-        const broken_structures = creep.room.find(FIND_MY_STRUCTURES,
+        const broken_structures = creep.room.find(FIND_STRUCTURES,
             {
                 filter: (struc: Structure) => struc.hits != struc.hitsMax
                     && struc.structureType != STRUCTURE_WALL
                     && struc.structureType != STRUCTURE_RAMPART
             });
-        // First repair any broken structure
+        // First repair any broken structure (repair in binned fashion)
         let target;
         let most_broken = Number.MAX_SAFE_INTEGER; // Anything >= 1
         for (const struc of broken_structures) {
-            if (struc.hits / struc.hitsMax < most_broken) {
-                most_broken = struc.hits / struc.hitsMax;
+            if (~~((struc.hits / struc.hitsMax) * 10) < most_broken) {
+                most_broken = ~~((struc.hits / struc.hitsMax) * 10);
                 target = struc;
             }
         }
