@@ -39,9 +39,9 @@ export class Transporter extends EnergyCreep {
                     [STRUCTURE_TOWER],
                     this.filter_available_energy_capacity));
         }
-        // when there are no towers, go to the terminal if it has less than 10.000 energy
+        // when there are no towers, go to the terminal if it has less than 25.000 energy
         if (storage == null && creep.room.terminal != undefined
-            && creep.room.terminal.store.getUsedCapacity(RESOURCE_ENERGY) < 10000) {
+            && creep.room.terminal.store.getUsedCapacity(RESOURCE_ENERGY) < 25000) {
             storage = creep.room.terminal;
         }
         // when there is no terminal, go to the storage

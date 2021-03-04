@@ -44,6 +44,11 @@ export const loop = ErrorMapper.wrapLoop(() => {
     // Trade with other players
     const M = new Market(Game);
 
+    // Update timers
+    for (const room in Memory.rooms) {
+        Memory.rooms[room].evaluation_time += 1;
+    }
+
     // Automatically delete memory of missing creeps
     for (const name in Memory.creeps) {
         if (!(name in Game.creeps)) {

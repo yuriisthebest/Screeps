@@ -23,13 +23,21 @@ export class Market {
             // Check all terminals with all resources (minerals) to update stock
             for (const res of [RESOURCE_UTRIUM, RESOURCE_LEMERGIUM,
                 RESOURCE_KEANIUM, RESOURCE_ZYNTHIUM, RESOURCE_OXYGEN,
-                RESOURCE_HYDROGEN, RESOURCE_CATALYST]) {
+                RESOURCE_HYDROGEN, RESOURCE_CATALYST, RESOURCE_ENERGY]) {
                 if (room.terminal.store[res] < 10000) { continue }
+                // Only sell energy if there is more than 400000 in storage
+                if (res == RESOURCE_ENERGY
+                    && room.storage != undefined
+                    && room.storage.store.energy < 400000) { continue; }
                 const order = this.find_trades(res, room.terminal.store[res], room)
                 if (order != undefined && best_gain < order.price) {
                     best_gain = order.price;
                     best_order = order;
                     amount = room.terminal.store[res];
+                    if (res == RESOURCE_ENERGY && order.roomName != undefined) {
+                        amount -= this.game.market.calcTransactionCost(
+                            amount, room.name, order.roomName);
+                    }
                 }
             }
             if (best_order != undefined && amount != undefined) {

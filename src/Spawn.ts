@@ -6,11 +6,14 @@ export class SpawnManager {
 
     manage(spawner: StructureSpawn): void {
         /*
+        Manage timers
         Check if a critical creep is required
         Check if the spawner has enough energy
         Determine new creep
         Spawn new creep
         */
+        // Manage timers
+        spawner.memory.scout_timer += 21;
         // If the spawner is already spawning something, skip it
         if (spawner.spawning != null) { }
         // else if (spawner.memory.timeout > 0) { spawner.memory.timeout = - 1 }
@@ -77,9 +80,10 @@ export class SpawnManager {
      * Repairer - Whenever there are objects that can break and <1 repairers
      * Transporters - when at level 4 and <2 trans
      * Upgrader - When there is a storage and <1 upgraders
-     * Mega_upgrader - when the storage is filled with 300.000 energy
+     * Mega_upgrader - when the storage is filled with 300.000 energy and level < 8
      * Mineralist - There is a extractor with a active mineral and <1 mineralists
      * Trader - There is an extractor and terminal and >0 mineralists and <1 traders
+     * Scout - Level 3+ and once every 10.000 ticks
      */
     determine_role(spawner: StructureSpawn, energy: number): CreepType {
         // Spawn collector
@@ -112,6 +116,7 @@ export class SpawnManager {
         // Spawn mega_upgrader
         if (spawner.room.storage != undefined
             && Search.search_creeps(spawner.room, [CreepType.mega_upgrader]).length < 1
+            && spawner.room.controller?.level != 8
             && spawner.room.storage.store.getUsedCapacity(RESOURCE_ENERGY) > 300000) {
             return CreepType.mega_upgrader;
         }
@@ -129,6 +134,12 @@ export class SpawnManager {
             && spawner.room.terminal != undefined
             && Search.search_structures(spawner.room, [STRUCTURE_EXTRACTOR]).length > 0) {
             return CreepType.trader;
+        }
+        // Spawn scout
+        if (spawner.room.controller?.level != undefined && spawner.room.controller.level >= 3
+            && (spawner.memory.scout_timer == undefined || spawner.memory.scout_timer > 10000)) {
+            spawner.memory.scout_timer = 0;
+            return CreepType.scout;
         }
 
         // No proper role to spawn found
@@ -185,12 +196,18 @@ export class SpawnManager {
             // Transporters transport 100 per 3 parts
             case (CreepType.transporter):
                 return 18; // 600
+            // Repairers don't need full bodies
+            case (CreepType.repairer):
+                return 18;
             // Traders transport 100 per 3 parts
             case (CreepType.trader):
                 return 9; // 300
             // Upgraders should not use entire economy for upgrades
             case (CreepType.upgrader):
                 return 19;
+            // Scouts only need one Move and one Tough part
+            case (CreepType.scout):
+                return 2;
             default:
                 return 50;
         }

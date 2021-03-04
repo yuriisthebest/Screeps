@@ -2,6 +2,7 @@
 import { BasicCreepManager } from "Creeps/BasicCreep";
 import { Builder } from "Creeps/Builder";
 import { Collector } from "Creeps/Collector";
+import { Scout } from "Creeps/GlobalCreeps/Scout";
 import { Harvester } from "Creeps/Harvester";
 import { MineralCollector } from "Creeps/MineralCollector";
 import { Repair } from "Creeps/Repair";
@@ -19,6 +20,7 @@ export enum CreepType {
     mineralist = 6,
     mega_upgrader = 7,
     trader = 8,
+    scout = 9,
 }
 
 export var CreepClasses: { [Key: number]: BasicCreepManager } = {};
@@ -31,6 +33,7 @@ CreepClasses[CreepType.upgrader] = new Upgrader();
 CreepClasses[CreepType.mineralist] = new MineralCollector();
 CreepClasses[CreepType.mega_upgrader] = new Upgrader();
 CreepClasses[CreepType.trader] = new Trader();
+CreepClasses[CreepType.scout] = new Scout();
 
 
 export var Flag_color: { [Key: string]: ColorConstant } = {};

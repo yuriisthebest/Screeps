@@ -5,10 +5,12 @@ interface CreepMemory {
     // working: boolean;
     task?: number;
     dying: boolean;
+    path?: RoomPosition[];
 }
 
 interface SpawnMemory {
     timeout: number;
+    scout_timer: number;
 }
 
 interface RoomMemory {
@@ -16,6 +18,10 @@ interface RoomMemory {
     walls: RoomPosition[];
     gates: RoomPosition[];
     ramparts: RoomPosition[];
+    evaluation_time: number;
+    ownership: number;
+    treat: number;
+    purpose: number;
 }
 
 interface Memory {

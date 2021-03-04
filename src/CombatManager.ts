@@ -38,8 +38,10 @@ export class CombatManager {
             enemies = room.find(FIND_HOSTILE_CREEPS);
         }
         for (const enemy of enemies) {
-            tower.attack(enemy);
-            console.log(`Tower in room ${room.name} is attacking ${enemy.name} from ${enemy.owner}`)
+            let code = tower.attack(enemy);
+            if (code == OK) {
+                console.log(`Tower in room ${room.name} is attacking ${enemy.name} from ${enemy.owner.username}`)
+            }
         }
     }
 }
