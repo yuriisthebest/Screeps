@@ -1,5 +1,5 @@
 import { Search } from "utils/Find";
-import { EnergyCreep } from "./EnergyCreeps";
+import { EnergyCreep } from "../EnergyCreeps";
 
 export class Transporter extends EnergyCreep {
     /**

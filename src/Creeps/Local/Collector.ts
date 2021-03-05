@@ -1,4 +1,4 @@
-import { BasicCreepManager } from "./BasicCreep";
+import { BasicCreepManager } from "../BasicCreep";
 import { Search } from "utils/Find";
 import { Transfer } from "utils/Transfer";
 import { CreepType } from "Constants/globals";

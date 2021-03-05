@@ -1,4 +1,4 @@
-import { EnergyCreep } from "./EnergyCreeps";
+import { EnergyCreep } from "../EnergyCreeps";
 
 export class Builder extends EnergyCreep {
     // Transfer energy to structures

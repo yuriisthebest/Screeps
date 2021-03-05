@@ -1,4 +1,4 @@
-import { BasicCreepManager } from "./BasicCreep";
+import { BasicCreepManager } from "../BasicCreep";
 
 export class Trader extends BasicCreepManager {
     /**

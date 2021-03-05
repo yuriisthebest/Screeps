@@ -1,7 +1,7 @@
 import { CreepType } from "Constants/globals";
 import { Search } from "utils/Find";
 import { Transfer } from "utils/Transfer";
-import { BasicCreepManager } from "./BasicCreep";
+import { BasicCreepManager } from "../BasicCreep";
 
 export class MineralCollector extends BasicCreepManager {
     /**
