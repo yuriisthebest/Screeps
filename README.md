@@ -38,6 +38,15 @@ Finally, there are also NPM scripts that serve as aliases for these commands in 
 
 #### Important! To upload code to a private server, you must have [screepsmod-auth](https://github.com/ScreepsMods/screepsmod-auth) installed and configured!
 
+### Updates
+
+To update packages and game objects after version changes, open a terminal in the main folder and run:
+
+```bash
+# npm
+npm update
+```
+
 ## Typings
 
 The type definitions for Screeps come from [typed-screeps](https://github.com/screepers/typed-screeps). If you find a problem or have a suggestion, please open an issue there.
