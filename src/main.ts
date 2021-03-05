@@ -4,6 +4,7 @@ import { SpawnManager } from "Spawn";
 import { BasicConstruction } from "Construction/Construction";
 import { CombatManager } from "CombatManager";
 import { Market } from "SellMarket";
+import { plotRoomInfo } from "Visuals/roommapinfo";
 
 // When compiling TS to JS and bundling with rollup, the line numbers and file names in error messages change
 // This utility uses source maps to get the line numbers and file names of the original, TS source code
@@ -45,8 +46,13 @@ export const loop = ErrorMapper.wrapLoop(() => {
     const M = new Market(Game);
 
     // Update timers
-    for (const room in Memory.rooms) {
-        Memory.rooms[room].evaluation_time += 1;
+    for (const roomname in Memory.rooms) {
+        Memory.rooms[roomname].evaluation_time += 1;
+    }
+
+    // Map visuals
+    for (const roomname in Memory.rooms) {
+        plotRoomInfo(roomname);
     }
 
     // Automatically delete memory of missing creeps

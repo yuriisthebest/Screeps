@@ -35,8 +35,12 @@ CreepClasses[CreepType.mega_upgrader] = new Upgrader();
 CreepClasses[CreepType.trader] = new Trader();
 CreepClasses[CreepType.scout] = new Scout();
 
+export var DEBUG: boolean = false;
 
 export var Flag_color: { [Key: string]: ColorConstant } = {};
 Flag_color['storage'] = COLOR_WHITE;
 Flag_color['extension'] = COLOR_YELLOW;
 Flag_color['debug'] = COLOR_GREY;
+
+/** Duration (in ticks) between room evaluations */
+export const SCOUTING_COOLDOWN: number = 40000;

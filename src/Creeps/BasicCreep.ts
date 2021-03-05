@@ -5,16 +5,14 @@ import { Transfer } from "utils/Transfer";
  * Abstract class that mimic the Creep class
  * Allows for creep differentiation
  */
-export class BasicCreepManager {
+export abstract class BasicCreepManager {
     /**
      * Orders a creep to do its expected behavior
      *  Must be implemented by child classes
      *
      * @param creep Creep to order
      */
-    manage(creep: Creep): void {
-        console.log(`"manage_creep()" is not implemented for class: ${this.constructor.name}`);
-    }
+    abstract manage(creep: Creep): void
 
     /**
      * Filter function to be used in Search, find or look tasks

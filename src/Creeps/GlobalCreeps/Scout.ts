@@ -1,5 +1,5 @@
+import { SCOUTING_COOLDOWN } from "Constants/globals";
 import { BasicCreepManager } from "Creeps/BasicCreep";
-import { find } from "lodash";
 
 /**
  * Scouting unit that moves through rooms and evaluates them
@@ -102,7 +102,7 @@ export class Scout extends BasicCreepManager {
         const room = Memory.rooms[roomname];
         if (room == undefined
             || room.evaluation_time == undefined
-            || room.evaluation_time > 40000) {
+            || room.evaluation_time > SCOUTING_COOLDOWN) {
             if (room != undefined) {
                 console.log(room.evaluation_time);
             }

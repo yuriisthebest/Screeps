@@ -1,6 +1,9 @@
 import { BasicCreepManager } from "./BasicCreep";
 
-export class EnergyCreep extends BasicCreepManager {
+/**
+ * Abstract class for creeps that move energy from one place to another (including actions)
+ */
+export abstract class EnergyCreep extends BasicCreepManager {
     /**
      * EnergyCreeps have two modes
      *  Fetch (task 0): Go to energy source and get energy
@@ -53,7 +56,5 @@ export class EnergyCreep extends BasicCreepManager {
         this.fetch_energy(creep, energy_resources)
     }
 
-    transfer_energy(creep: Creep) {
-        console.log(`tranfer_energy() is not implemented for EnergyCreep with role ${this.constructor.name}`)
-    }
+    abstract transfer_energy(creep: Creep): void
 }
